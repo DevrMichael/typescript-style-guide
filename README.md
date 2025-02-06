@@ -209,7 +209,35 @@ const userName = "John";
 ## 7. Declarations & Alignment
 
 - Use **single responsibility** per file.
+
+```ts
+// Bad: Multiple components in a single file
+const Header = () => <header>Header</header>;
+const Footer = () => <footer>Footer</footer>;
+
+export { Header, Footer };
+
+// Good: Separate files for each component
+// Header.tsx
+const Header = () => <header>Header</header>;
+export default Header;
+
+// Footer.tsx
+const Footer = () => <footer>Footer</footer>;
+export default Footer;
+```
+
 - Use `export default` for components.
+
+```ts
+// Bad: Named export for a single component
+export const Button = () => <button>Click me</button>;
+
+// Good: Default export for a single component
+const Button = () => <button>Click me</button>;
+export default Button;
+```
+
 - Maintain **consistent indentation** and spacing.
 
 ---
@@ -217,31 +245,149 @@ const userName = "John";
 ## 8. Quotes & Spacing
 
 - Use **single quotes** for JavaScript/TypeScript.
+
+```ts
+// Bad
+const message = "Hello World";
+
+// Good
+const message = 'Hello World';
+```
+
 - Use **double quotes** for JSX attributes.
+
+```ts
+// Bad
+<Button label='Click me' />;
+
+// Good
+<Button label="Click me" />;
+```
+
 - Do not pad JSX curly braces.
+
+```ts
+// Bad
+<Component prop={ someValue } />;
+
+// Good
+<Component prop={someValue} />;
+```
 
 ---
 
 ## 9. Props & State
 
 - Always use **interfaces** or **types** for props.
+
+```ts
+// Bad: No type definition
+const Button = (props) => <button>{props.label}</button>;
+
+// Good: Using an interface for props
+interface ButtonProps {
+  label: string;
+}
+
+const Button: React.FC<ButtonProps> = ({ label }) => <button>{label}</button>;
+```
+
 - Avoid `any`; prefer `unknown` when necessary.
+
+```ts
+// Bad
+function processInput(input: any) {
+  console.log(input);
+}
+
+// Good
+function processInput(input: unknown) {
+  if (typeof input === 'string') {
+    console.log(input.toUpperCase());
+  }
+}
+```
+
 - Use **defaultProps** or default function parameters for optional props.
+
+```ts
+// Bad
+interface UserProps {
+  name?: string;
+}
+
+const User = ({ name }: UserProps) => <div>{name ? name : 'Guest'}</div>;
+
+// Good
+interface UserProps {
+  name?: string;
+}
+
+const User = ({ name = 'Guest' }: UserProps) => <div>{name}</div>;
+```
 
 ---
 
 ## 10. Refs & Parentheses
 
 - Use **ref callbacks** over string refs.
+
+```ts
+// Bad
+<input ref="myInput" />;
+
+// Good
+const inputRef = useRef<HTMLInputElement>(null);
+<input ref={inputRef} />;
+```
+
 - Wrap JSX in parentheses when multiline.
+
+```ts
+// Bad
+return <div>
+  <Header />
+  <Main />
+  <Footer />
+</div>;
+
+// Good
+return (
+  <div>
+    <Header />
+    <Main />
+    <Footer />
+  </div>
+);
+```
 
 ---
 
 ## 11. Tags & Methods
 
 - Use **self-closing tags** where applicable.
+
+```ts
+// Bad
+<img src="image.jpg"></img>;
+
+// Good
+<img src="image.jpg" />;
+```
+
 - Use **arrow functions** for event handlers.
-- Bind event handlers in constructor if using class components.
+
+```ts
+// Bad
+function handleClick() {
+  console.log('Clicked');
+}
+
+// Good
+const handleClick = () => {
+  console.log('Clicked');
+};
+```
 
 ---
 
@@ -249,12 +395,46 @@ const userName = "John";
 
 For class components, order methods as follows:
 
-1. `static` properties and methods
-2. Constructor
-3. Lifecycle methods
-4. Event handlers
-5. Getter methods
-6. Render method
+1. State and Refs (using useState and useRef)
+2. Derived Values and Computed Variables
+3. Effects (useEffect)
+4. Event Handlers
+5. Render Logic (JSX return statement)
+
+```ts
+   const ExampleComponent: React.FC = () => {
+  // 1. State and Refs
+  const [count, setCount] = useState(0);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  // 2. Derived Values and Computed Variables
+  const buttonLabel = `Clicked ${count} times`;
+
+  // 3. Effects
+  useEffect(() => {
+    console.log('Component mounted');
+  }, []);
+
+  // 4. Event Handlers
+  const handleClick = () => {
+    setCount((prevCount) => prevCount + 1);
+  };
+
+  // 5. Render Logic
+  return (
+    <button ref={buttonRef} onClick={handleClick}>
+      {buttonLabel}
+    </button>
+  );
+};
+
+export default ExampleComponent;
+```ts
+
+### Why This Order?
+- Keeps related logic grouped together
+- Improves readability and maintainability
+- Prevents unnecessary re-renders by optimizing state updates
 
 ---
 
