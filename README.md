@@ -204,16 +204,67 @@ function useLogging() {
 ## 6. Naming Conventions
 
 - Use **PascalCase** for components.
+
+```ts
+// ❌ Bad: Using lowercase or camelCase for a component name
+function userprofile() {
+  return <div>User Profile</div>;
+}
+
+export default userprofile;
+
+// ✅ Good: Using PascalCase for the component name
+function UserProfile() {
+  return <div>User Profile</div>;
+}
+
+export default UserProfile;
+```
+
 - Use **camelCase** for variables and functions.
+
+```ts
+// ❌ Bad: Using uppercase or PascalCase for variables
+const UserName = "Alice";
+function GetUserAge() {
+  return 30;
+}
+
+// ✅ Good: Use camelCase for variables and functions
+const userName = "Alice";
+function getUserAge() {
+  return 30;
+}
+```
+
 - Use `T` prefix for generic type parameters.
+
+```ts
+// ❌ Bad: Generic type has no `T` prefix
+function getFirstItem<Type>(arr: Type[]): Type {
+  return arr[0];
+}
+
+// ✅ Good: Generic type prefixed with `T`
+function getFirstItem<T>(arr: T[]): T {
+  return arr[0];
+}
+```
+
 - Use meaningful names.
 
 ```ts
-// Bad
-const x = "John";
+// ❌ Bad: Non-standard prop names
+interface UserProps {
+  User_Name: string;
+  AGE: number;
+}
 
-// Good
-const userName = "John";
+// ✅ Good: camelCase for props
+interface UserProps {
+  userName: string;
+  age: number;
+}
 ```
 
 ---
