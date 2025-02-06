@@ -254,6 +254,24 @@ function getFirstItem<T>(arr: T[]): T {
 - Use meaningful names.
 
 ```ts
+  // ❌ Bad: Unclear variable names
+const x = "John";
+const d = new Date();
+function doSomething() {
+  return "Hello";
+}
+
+// ✅ Good: Meaningful variable and function names
+const userName = "John";
+const currentDate = new Date();
+function generateGreeting() {
+  return "Hello";
+}
+```
+
+- Naming Conventions in Props & State
+
+```ts
 // ❌ Bad: Non-standard prop names
 interface UserProps {
   User_Name: string;
