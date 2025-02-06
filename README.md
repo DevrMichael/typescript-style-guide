@@ -130,15 +130,27 @@ interface User {
 - Use `extends` for interface inheritance.
 
 ```ts
-// Bad
-type Admin = User & {
+// Bad: Using type for extending an object type
+type AdminProps = UserProps & {
   role: "admin" | "super-admin";
 };
 
-// Good
-interface Admin extends User {
+// Good: Using interface with extends
+interface AdminProps extends UserProps {
   role: "admin" | "super-admin";
 }
+
+const AdminCard: React.FC<AdminProps> = ({ id, name, role }) => {
+  return (
+    <div>
+      <h3>Admin ID: {id}</h3>
+      <p>Name: {name}</p>
+      <p>Role: {role}</p>
+    </div>
+  );
+};
+
+export default AdminCard;
 ```
 
 ---
